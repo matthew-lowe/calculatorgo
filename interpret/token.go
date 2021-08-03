@@ -10,6 +10,8 @@ const (
 	NONE TokenType = iota
 	WHITESPACE
 	NUM
+	L_BRACKET
+	R_BRACKET
 	ADD
 	SUB
 	MUL
@@ -17,7 +19,7 @@ const (
 )
 
 func (t TokenType) String() string {
-	strings := [...]string{"NONE", "WHITESPACE", "NUM", "ADD", "SUB", "MUL", "DIV"}
+	strings := [...]string{"NONE", "WHITESPACE", "NUM", "(", ")", "ADD", "SUB", "MUL", "DIV"}
 
 	if t < NONE || t > DIV {
 		return "UNKOWN"
@@ -38,7 +40,7 @@ func NewToken(_type TokenType, hasValue bool, value float64) *Token {
 
 func (token Token) String() string {
 	if token.HasValue {
-		return fmt.Sprintf("(%v, %v)", token.Type.String(), token.Value)
+		return fmt.Sprintf("%v", token.Value)
 	} else {
 		return fmt.Sprintf("%v", token.Type.String())
 	}

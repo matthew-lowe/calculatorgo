@@ -63,6 +63,10 @@ func findType(char rune) TokenType {
 		return MUL
 	case '/':
 		return DIV
+	case '(':
+		return L_BRACKET
+	case ')':
+		return R_BRACKET
 	default:
 		return NONE
 	}

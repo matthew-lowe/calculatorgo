@@ -21,7 +21,7 @@ func main() {
 		fmt.Printf("Hello %v!\n", scanner.Text())
 	*/
 
-	source := "69 + 420 - 666 / 2"
+	source := "(69 + 420) * (666 / 2)"
 	tokens := interpret.Tokenize(source)
 	tree := interpret.Parse(tokens)
 	fmt.Println(interpret.Evaluate(tree))
