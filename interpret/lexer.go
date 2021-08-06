@@ -1,6 +1,7 @@
 package interpret
 
 import (
+	"math"
 	"unicode"
 )
 
@@ -21,7 +22,7 @@ func Tokenize(source string) []*Token {
 		}
 	}
 
-	return mergeDigits(tokens)
+	return mergeDecimals(mergeDigits(tokens))
 }
 
 func mergeDigits(tokens []*Token) []*Token {
@@ -47,6 +48,28 @@ func mergeDigits(tokens []*Token) []*Token {
 	return newTokens[1:] // don't need the first whitespace character
 }
 
+func mergeDecimals(tokens []*Token) []*Token {
+	newTokens := make([]*Token, 0, len(tokens))
+	newTokens = append(newTokens, NewToken(WHITESPACE, false, 0))
+	newTokens = append(newTokens, tokens[0])
+
+	for i := 1; i < len(tokens); i++ {
+		if i >= len(tokens)-1 || tokens[i].Type != DOT {
+			newTokens = append(newTokens, tokens[i])
+			continue
+		} else {
+			nextValue := tokens[i+1].Value
+			prevValue := tokens[i-1].Value
+			numDigits := math.Floor(math.Log10(nextValue) + 1)
+			newTokens[len(newTokens)-1].Value = prevValue + (nextValue / math.Pow(10, numDigits))
+			//fmt.Printf("new value: %v\n", )
+			i += 1
+		}
+	}
+
+	return newTokens[1:]
+}
+
 func findType(char rune) TokenType {
 	if unicode.IsDigit(char) {
 		return NUM
@@ -63,6 +86,8 @@ func findType(char rune) TokenType {
 		return MUL
 	case '/':
 		return DIV
+	case '.':
+		return DOT
 	case '(':
 		return L_BRACKET
 	case ')':

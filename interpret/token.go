@@ -10,6 +10,7 @@ const (
 	NONE TokenType = iota
 	WHITESPACE
 	NUM
+	DOT
 	L_BRACKET
 	R_BRACKET
 	ADD
@@ -19,7 +20,7 @@ const (
 )
 
 func (t TokenType) String() string {
-	strings := [...]string{"NONE", "WHITESPACE", "NUM", "(", ")", "ADD", "SUB", "MUL", "DIV"}
+	strings := [...]string{"NONE", "WHITESPACE", "NUM", ".", "(", ")", "ADD", "SUB", "MUL", "DIV"}
 
 	if t < NONE || t > DIV {
 		return "UNKOWN"
