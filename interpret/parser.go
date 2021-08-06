@@ -1,7 +1,7 @@
 package interpret
 
-func getTokenPriority() [5]TokenType {
-	return [5]TokenType{SUB, ADD, MUL, DIV, NUM}
+func getTokenPriority() [6]TokenType {
+	return [...]TokenType{SUB, ADD, MUL, DIV, EXP, NUM}
 }
 
 func Parse(input []*Token) *Node {

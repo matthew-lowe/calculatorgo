@@ -17,12 +17,13 @@ const (
 	SUB
 	MUL
 	DIV
+	EXP
 )
 
 func (t TokenType) String() string {
-	strings := [...]string{"NONE", "WHITESPACE", "NUM", ".", "(", ")", "ADD", "SUB", "MUL", "DIV"}
+	strings := [...]string{"NONE", "WHITESPACE", "NUM", ".", "(", ")", "ADD", "SUB", "MUL", "DIV", "EXP"}
 
-	if t < NONE || t > DIV {
+	if t < NONE || t > EXP {
 		return "UNKOWN"
 	}
 

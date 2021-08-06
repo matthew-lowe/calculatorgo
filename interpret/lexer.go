@@ -86,6 +86,8 @@ func findType(char rune) TokenType {
 		return MUL
 	case '/':
 		return DIV
+	case '^':
+		return EXP
 	case '.':
 		return DOT
 	case '(':

@@ -1,5 +1,7 @@
 package interpret
 
+import "math"
+
 func Evaluate(root *Node) float64 {
 	switch root.Value.Type {
 	case NUM:
@@ -12,6 +14,8 @@ func Evaluate(root *Node) float64 {
 		return Evaluate(root.Children[0]) * Evaluate(root.Children[1])
 	case DIV:
 		return Evaluate(root.Children[0]) / Evaluate(root.Children[1])
+	case EXP:
+		return math.Pow(Evaluate(root.Children[0]), Evaluate(root.Children[1]))
 	default:
 		panic("FUCK")
 	}
