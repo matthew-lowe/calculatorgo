@@ -2,6 +2,17 @@ package interpret
 
 import "math"
 
+func EvaluateStream(in <-chan *Node) <-chan float64 {
+	out := make(chan float64)
+	go func() {
+		for n := range in {
+			out <- Evaluate(n)
+		}
+		close(out)
+	}()
+	return out
+}
+
 func Evaluate(root *Node) float64 {
 	switch root.Value.Type {
 	case NUM:

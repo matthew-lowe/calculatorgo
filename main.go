@@ -15,6 +15,12 @@ func printList(tokens []*interpret.Token) {
 	fmt.Println()
 }
 
+func run(source string) float64 {
+	tokens := interpret.Tokenize(source)
+	tree := interpret.Parse(tokens)
+	return interpret.Evaluate(tree)
+}
+
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Enter maffs:")
@@ -23,9 +29,6 @@ func main() {
 		fmt.Print("> ")
 		scanner.Scan()
 		source := scanner.Text()
-		tokens := interpret.Tokenize(source)
-		printList(tokens)
-		tree := interpret.Parse(tokens)
-		fmt.Println(interpret.Evaluate(tree))
+		fmt.Println(run(source))
 	}
 }

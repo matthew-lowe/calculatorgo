@@ -5,24 +5,41 @@ import (
 	"unicode"
 )
 
+func TokenizeStream(in <-chan string) <-chan []*Token {
+	out := make(chan []*Token)
+	go func() {
+		for s := range in {
+			out <- Tokenize(s)
+		}
+		close(out)
+	}()
+	return out
+}
+
 func Tokenize(source string) []*Token {
 	tokens := make([]*Token, 0, len(source)) // Length of source is upper bound for the capacity of the slice
 
 	// Convert the source to a list of tokens
 	for _, char := range source {
-		tokenType := findType(char)
-
-		switch tokenType {
-		case WHITESPACE:
-		case NUM:
-			value := int(char)
-			tokens = append(tokens, NewToken(NUM, true, float64(value)-48)) // Subtract 48 becuase ascii
-		default:
-			tokens = append(tokens, NewToken(tokenType, false, 0))
-		}
+		token := parseChar(char)
+		tokens = append(tokens, token)
 	}
+	tokens = removeWhitespace(tokens)
 
 	return mergeDecimals(mergeDigits(tokens))
+}
+
+// Parse a single character
+func parseChar(char rune) *Token {
+	tokenType := findType(char)
+
+	switch tokenType {
+	case NUM:
+		value := int(char)
+		return NewToken(NUM, true, float64(value)-48) // Subtract 48 becuase ascii
+	default:
+		return NewToken(tokenType, false, 0)
+	}
 }
 
 func mergeDigits(tokens []*Token) []*Token {

@@ -4,6 +4,17 @@ func getTokenPriority() [6]TokenType {
 	return [...]TokenType{SUB, ADD, MUL, DIV, EXP, NUM}
 }
 
+func ParseStream(in <-chan []*Token) <-chan *Node {
+	out := make(chan *Node)
+	go func() {
+		for t := range in {
+			out <- Parse(t)
+		}
+		close(out)
+	}()
+	return out
+}
+
 func Parse(input []*Token) *Node {
 	tokens := removeOuterBrackets(input)
 	rootToken, rootIndex := getRoot(tokens)
